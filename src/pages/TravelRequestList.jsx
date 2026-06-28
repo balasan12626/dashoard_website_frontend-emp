@@ -65,7 +65,7 @@ export default function TravelRequestList() {
                     </Space>
                     <div style={{ fontSize: 12, color: "var(--text-secondary)" }}>
                       Created: {new Date(r.created_at).toLocaleString()}
-                      {r.reviewed_at && ` â€¢ Reviewed: ${new Date(r.reviewed_at).toLocaleString()}`}
+                      {r.reviewed_at && ` • Reviewed: ${new Date(r.reviewed_at).toLocaleString()}`}
                     </div>
                     {r.remarks && (
                       <Alert message={r.remarks} type="warning" showIcon style={{ marginTop: 8, padding: '8px 12px' }} />
@@ -91,7 +91,7 @@ export default function TravelRequestList() {
                   <div style={{ marginTop: 12, display: "flex", gap: 16, flexWrap: "wrap" }}>
                     {r.request_data.services.FLIGHT?.map((f, i) => (
                       <Text key={i} type="secondary" style={{ fontSize: 12 }}>
-                        âœˆï¸ {f.journeyDetails?.[0]?.from?.airportCode || "?"} â†’ {f.journeyDetails?.[0]?.to?.airportCode || "?"} ({f.travelClass})
+                        âœˆï¸ {f.journeyDetails?.[0]?.from?.airportCode || "?"} → {f.journeyDetails?.[0]?.to?.airportCode || "?"} ({f.travelClass})
                       </Text>
                     ))}
                     {r.request_data.services.HOTEL?.map((h, i) => (

@@ -2,6 +2,10 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { resetPasswordApi } from "../services/authApi";
 
+function CheckIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><polyline points="20 6 9 17 4 12"/></svg>;
+}
+
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
   const [email, setEmail] = useState(searchParams.get("email") || "");
@@ -67,7 +71,7 @@ export default function ResetPassword() {
             background: "rgba(16, 185, 129, 0.15)", border: "1px solid rgba(16, 185, 129, 0.3)",
             color: "#6ee7b7", padding: 14, borderRadius: 10, fontSize: 13, marginBottom: 20,
             display: "flex", alignItems: "flex-start", gap: 10
-          }}><span>âœ“</span><span>{message}</span></div>
+          }}><span><CheckIcon /></span><span>{message}</span></div>
         )}
 
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
@@ -102,7 +106,7 @@ export default function ResetPassword() {
             <input
               type="password" value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+              placeholder="••••••••"
               style={{
                 width: "100%", padding: "11px 13px", borderRadius: 8,
                 background: "var(--border-color)", border: "1px solid rgba(99, 102, 241, 0.3)",
@@ -115,7 +119,7 @@ export default function ResetPassword() {
             <input
               type="password" value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+              placeholder="••••••••"
               style={{
                 width: "100%", padding: "11px 13px", borderRadius: 8,
                 background: "var(--border-color)", border: "1px solid rgba(99, 102, 241, 0.3)",

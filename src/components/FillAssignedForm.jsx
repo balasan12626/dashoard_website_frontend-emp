@@ -3,6 +3,10 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import DynamicFormRenderer from "./FormBuilder/DynamicFormRenderer";
 import { getAccessToken } from "../services/authApi";
 
+function CheckCircleIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>;
+}
+
 const BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000/api/v1';
 const FORM_BASE = `${BASE}/form-builder`;
 const ASSIGN_BASE = `${BASE}/form-assignments`;
@@ -22,7 +26,6 @@ export default function FillAssignedForm() {
   const loadAssignment = useCallback(async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('authUser') ? JSON.parse(localStorage.getItem('authUser')) : null;
       const res = await fetch(`${ASSIGN_BASE}/my-forms`, {
         headers: { 'Authorization': `Bearer ${getAccessToken()}` }
       });
@@ -49,7 +52,7 @@ export default function FillAssignedForm() {
       const slug = assignment?.form_slug;
       const res = await fetch(`${FORM_BASE}/public/${slug}/submit`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getAccessToken()}` },
         body: JSON.stringify(data),
       });
       const json = await res.json();
@@ -66,7 +69,7 @@ export default function FillAssignedForm() {
     return (
       <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, var(--bg-page) 0%, var(--bg-deeper) 100%)", color: "var(--text-primary)", fontFamily: "'Outfit', sans-serif", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ textAlign: "center", padding: 40 }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>âœ…</div>
+          <div style={{ fontSize: 48, marginBottom: 12 }}><CheckCircleIcon /></div>
           <h2 style={{ fontSize: 22, fontWeight: 800, margin: "0 0 8px" }}>Form Submitted!</h2>
           <p style={{ color: "var(--text-secondary)", fontSize: 14, margin: "0 0 24px" }}>Your response has been recorded successfully.</p>
           <Link to="/my-forms" style={{ padding: "10px 24px", borderRadius: 8, background: "linear-gradient(135deg, #6366f1, #4f46e5)", color: "#fff", fontWeight: 700, fontSize: 14, textDecoration: "none" }}>â† Back to My Forms</Link>

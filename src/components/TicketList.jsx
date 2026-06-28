@@ -3,6 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { listTickets, getTicketStats, deleteTicket } from "../services/ticketApi";
 
+function TicketIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M9 9h.01"/><path d="M15 9h.01"/><path d="M9 15h.01"/><path d="M15 15h.01"/><path d="M9 12h.01"/><path d="M15 12h.01"/></svg>;
+}
+function LockIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+}
+
 const statusColors = {
   open: { bg: "rgba(245,158,11,0.12)", color: "#fbbf24" },
   in_progress: { bg: "rgba(99,102,241,0.12)", color: "#818cf8" },
@@ -25,9 +32,11 @@ export default function TicketList() {
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({ status: "", category: "", priority: "", search: "" });
   const [statusMsg, setStatusMsg] = useState("");
+  const [loadError, setLoadError] = useState("");
 
   const loadTickets = useCallback(async () => {
     setLoading(true);
+    setLoadError("");
     try {
       const params = { limit: 50, offset: 0 };
       if (filters.status) params.status = filters.status;
@@ -36,7 +45,7 @@ export default function TicketList() {
       if (filters.search) params.search = filters.search;
       const json = await listTickets(params);
       setTickets(json.data || []);
-    } catch (err) { console.error(err); }
+    } catch (err) { setLoadError(err.message || "Failed to load tickets"); }
     finally { setLoading(false); }
   }, [filters]);
 
@@ -67,7 +76,7 @@ export default function TicketList() {
     <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, var(--bg-page) 0%, var(--bg-deeper) 100%)", color: "var(--text-primary)", fontFamily: "'Outfit', sans-serif", padding: "30px 40px" }}>
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 800, margin: 0 }}>ðŸŽ« {currentUser?.userType === 'employee' ? 'My Tickets' : 'All Tickets'}</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 800, margin: 0 }}><TicketIcon /> {currentUser?.userType === 'employee' ? 'My Tickets' : 'All Tickets'}</h1>
           <p style={{ color: "var(--text-secondary)", fontSize: 13, margin: "4px 0 0" }}>{currentUser?.userType === 'employee' ? 'Tickets created by you or assigned to you' : 'Raise and track support requests'}</p>
         </div>
         <div style={{ display: "flex", gap: 12 }}>
@@ -128,6 +137,11 @@ export default function TicketList() {
         </select>
       </div>
 
+      {loadError && (
+        <div style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", color: "#fca5a5", padding: 14, borderRadius: 10, fontSize: 14, marginBottom: 20, textAlign: "center" }}>
+          {loadError}
+        </div>
+      )}
       {loading ? (
         <div style={{ textAlign: "center", padding: 40, color: "var(--text-secondary)" }}>Loading tickets...</div>
       ) : tickets.length === 0 ? (
@@ -146,13 +160,13 @@ export default function TicketList() {
                     <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6, flexWrap: "wrap" }}>
                       <span style={{ padding: "3px 8px", borderRadius: 4, fontSize: 11, fontWeight: 700, background: sc.bg, color: sc.color }}>{t.status.replace("_", " ").toUpperCase()}</span>
                       <span style={{ padding: "3px 8px", borderRadius: 4, fontSize: 11, fontWeight: 700, background: pc.bg, color: pc.color }}>{t.priority.toUpperCase()}</span>
-                      <span style={{ padding: "3px 8px", borderRadius: 4, fontSize: 11, fontWeight: 600, background: t.visibility === "public" ? "rgba(16,185,129,0.12)" : "rgba(245,158,11,0.12)", color: t.visibility === "public" ? "#34d399" : "#fbbf24" }}>{t.visibility === "public" ? "ðŸŒ Public" : "ðŸ”’ Private"}</span>
+                      <span style={{ padding: "3px 8px", borderRadius: 4, fontSize: 11, fontWeight: 600, background: t.visibility === "public" ? "rgba(16,185,129,0.12)" : "rgba(245,158,11,0.12)", color: t.visibility === "public" ? "#34d399" : "#fbbf24" }}>{t.visibility === "public" ? "ðŸŒ Public" : <><LockIcon /> Private</>}</span>
                       <span style={{ fontSize: 11, color: "var(--text-secondary)" }}>{t.category.replace("_", " ")}</span>
                     </div>
                     <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>{t.subject}</div>
                     <div style={{ fontSize: 13, color: "var(--text-secondary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 600 }}>{t.description}</div>
                     <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 6 }}>
-                      by {t.created_by_name || "Unknown"} {t.assigned_to_name && <>â†’ assigned to <span style={{ color: "#818cf8" }}>{t.assigned_to_name}</span></>}
+                      by {t.created_by_name || "Unknown"} {t.assigned_to_name && <>→ assigned to <span style={{ color: "#818cf8" }}>{t.assigned_to_name}</span></>}
                       {" Â· "}{t.reply_count || 0} replies
                       {" Â· "}{new Date(t.created_at).toLocaleDateString()}
                     </div>

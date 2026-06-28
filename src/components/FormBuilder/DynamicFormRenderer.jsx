@@ -23,7 +23,7 @@ function DynamicField({ field, value, onChange, errors }) {
   const labelStyle = {
     fontWeight: 500,
     fontSize: "14px",
-    color: "#374151",
+    color: "var(--text-primary)",
     display: "flex",
     alignItems: "center",
     gap: "4px",
@@ -31,13 +31,13 @@ function DynamicField({ field, value, onChange, errors }) {
 
   const inputStyle = {
     padding: "10px 12px",
-    border: hasError ? "1px solid #ef4444" : "1px solid #d1d5db",
+    border: hasError ? "1px solid #ef4444" : "1px solid var(--border-color)",
     borderRadius: "6px",
     fontSize: "14px",
     outline: "none",
     transition: "border-color 0.15s",
-    background: "#fff",
-    color: "#111827",
+    background: "var(--bg-card)",
+    color: "var(--text-primary)",
     width: "100%",
     boxSizing: "border-box",
   };
@@ -49,7 +49,7 @@ function DynamicField({ field, value, onChange, errors }) {
   };
 
   const descriptionStyle = {
-    color: "#6b7280",
+    color: "var(--text-secondary)",
     fontSize: "12px",
     marginTop: "2px",
   };
@@ -146,7 +146,7 @@ function DynamicField({ field, value, onChange, errors }) {
                 left: value ? "22px" : "2px",
                 width: "20px",
                 height: "20px",
-                background: "#fff",
+                background: "var(--bg-card)",
                 borderRadius: "50%",
                 transition: "left 0.2s",
                 boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
@@ -254,8 +254,8 @@ function DynamicField({ field, value, onChange, errors }) {
 
       case "nested_object":
         return (
-          <div style={{ padding: "12px", border: "1px solid #e5e7eb", borderRadius: "6px", background: "#f9fafb" }}>
-            <div style={{ fontWeight: 600, fontSize: "13px", color: "#6b7280", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+          <div style={{ padding: "12px", border: "1px solid var(--border-color)", borderRadius: "6px", background: "var(--bg-deeper)" }}>
+            <div style={{ fontWeight: 600, fontSize: "13px", color: "var(--text-secondary)", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
               {field.label}
             </div>
             {(field.nestedFields || []).map(nf => (
@@ -275,13 +275,13 @@ function DynamicField({ field, value, onChange, errors }) {
 
       case "nested_array":
         return (
-          <div style={{ padding: "12px", border: "1px solid #e5e7eb", borderRadius: "6px", background: "#f9fafb" }}>
-            <div style={{ fontWeight: 600, fontSize: "13px", color: "#6b7280", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+          <div style={{ padding: "12px", border: "1px solid var(--border-color)", borderRadius: "6px", background: "var(--bg-deeper)" }}>
+            <div style={{ fontWeight: 600, fontSize: "13px", color: "var(--text-secondary)", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
               {field.label}
             </div>
             {(value || []).map((item, idx) => (
-              <div key={idx} style={{ padding: "8px", marginBottom: "8px", border: "1px dashed #d1d5db", borderRadius: "4px" }}>
-                <div style={{ fontSize: "12px", color: "#9ca3af", marginBottom: "4px" }}>Item {idx + 1}</div>
+              <div key={idx} style={{ padding: "8px", marginBottom: "8px", border: "1px dashed var(--border-color)", borderRadius: "4px" }}>
+                <div style={{ fontSize: "12px",     color: "var(--text-muted)", marginBottom: "4px" }}>Item {idx + 1}</div>
                 {(field.arrayFields || []).map(af => (
                   <DynamicField
                     key={af.key}
@@ -319,7 +319,7 @@ function DynamicField({ field, value, onChange, errors }) {
 
       case "address":
         return (
-          <div style={{ padding: "12px", border: "1px solid #e5e7eb", borderRadius: "6px", background: "#f9fafb" }}>
+          <div style={{ padding: "12px", border: "1px solid var(--border-color)", borderRadius: "6px", background: "var(--bg-deeper)" }}>
             {["street", "city", "state", "zip", "country"].map(sub => (
               <div key={sub} style={{ marginBottom: "8px" }}>
                 <label style={{ ...labelStyle, fontSize: "12px", marginBottom: "2px", textTransform: "capitalize" }}>{sub}</label>
@@ -433,7 +433,7 @@ function SignaturePad({ field, value, onChange, inputId }) {
         id={inputId}
         width={400}
         height={120}
-        style={{ border: "1px solid #d1d5db", borderRadius: "6px", width: "100%", height: "120px", cursor: "crosshair", touchAction: "none" }}
+        style={{ border: "1px solid var(--border-color)", borderRadius: "6px", width: "100%", height: "120px", cursor: "crosshair", touchAction: "none" }}
         onMouseDown={startDrawing}
         onMouseMove={draw}
         onMouseUp={stopDrawing}

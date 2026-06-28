@@ -3,6 +3,10 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { createTicket, searchUsersForShare } from "../services/ticketApi";
 
+function TicketIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M9 9h.01"/><path d="M15 9h.01"/><path d="M9 15h.01"/><path d="M15 15h.01"/><path d="M9 12h.01"/><path d="M15 12h.01"/></svg>;
+}
+
 export default function CreateTicket() {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -46,7 +50,7 @@ export default function CreateTicket() {
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, var(--bg-page) 0%, var(--bg-deeper) 100%)", color: "var(--text-primary)", fontFamily: "'Outfit', sans-serif", padding: "30px 40px" }}>
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 800, margin: 0 }}>ðŸŽ« Create New Ticket</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 800, margin: 0 }}><TicketIcon /> Create New Ticket</h1>
         <Link to="/tickets" style={{ padding: "10px 20px", borderRadius: 8, background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", color: "#818cf8", fontWeight: 700, fontSize: 14, textDecoration: "none" }}>â† Back to Tickets</Link>
       </header>
 
@@ -82,7 +86,7 @@ export default function CreateTicket() {
           </div>
         </div>
         <div style={{ marginBottom: 24, position: "relative" }}>
-          <label style={labelStyle}>Assign to (optional â€” leave empty to notify all admins)</label>
+          <label style={labelStyle}>Assign to (optional — leave empty to notify all admins)</label>
           <input value={userSearch} onChange={e => { setUserSearch(e.target.value); if (!e.target.value) setForm(p => ({ ...p, assignedTo: "" })); }} placeholder="Search by name or email..." style={inputStyle} onFocus={() => users.length > 0 && setShowUserDropdown(true)} />
           {showUserDropdown && users.length > 0 && (
             <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "var(--bg-elevated)", border: "1px solid var(--border-color)", borderRadius: 8, maxHeight: 200, overflowY: "auto", zIndex: 50, marginTop: 4 }}>

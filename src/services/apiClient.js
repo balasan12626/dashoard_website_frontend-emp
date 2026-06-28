@@ -32,10 +32,10 @@ export async function apiRequest(url, options = {}) {
         }
       } catch (err) {
         processQueue(err);
-        isRefreshing = false;
         throw err;
+      } finally {
+        isRefreshing = false;
       }
-      isRefreshing = false;
       res = await fetch(url, { ...options, headers });
     } else {
       await new Promise((resolve, reject) => {

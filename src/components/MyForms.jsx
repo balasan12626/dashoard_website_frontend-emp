@@ -2,16 +2,22 @@
 import { Link } from "react-router-dom";
 import { getMyForms } from "../services/formApi";
 
+function ClipboardIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>;
+}
+
 export default function MyForms() {
   const [forms, setForms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
   const loadForms = useCallback(async () => {
     setLoading(true);
+    setLoadError("");
     try {
       const json = await getMyForms();
       setForms(json.data || []);
-    } catch (err) { console.error(err); }
+    } catch (err) { setLoadError(err.message || "Failed to load forms"); }
     finally { setLoading(false); }
   }, []);
 
@@ -26,11 +32,16 @@ export default function MyForms() {
         </div>
       </header>
 
+      {loadError && (
+        <div style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", color: "#fca5a5", padding: 14, borderRadius: 10, fontSize: 14, marginBottom: 20, textAlign: "center" }}>
+          {loadError}
+        </div>
+      )}
       {loading ? (
         <div style={{ textAlign: "center", padding: 40, color: "var(--text-secondary)" }}>Loading forms...</div>
       ) : forms.length === 0 ? (
         <div style={{ textAlign: "center", padding: 60, color: "var(--text-secondary)" }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>ðŸ“‹</div>
+          <div style={{ fontSize: 48, marginBottom: 12 }}><ClipboardIcon /></div>
           <p style={{ fontSize: 16, fontWeight: 600, margin: "0 0 8px" }}>No forms assigned yet</p>
           <p style={{ fontSize: 13, margin: 0 }}>When admin assigns you a form, it will appear here.</p>
         </div>
@@ -50,7 +61,7 @@ export default function MyForms() {
                 {a.expires_at && <span style={{ marginLeft: 12, color: "#f59e0b" }}>Expires: {new Date(a.expires_at).toLocaleDateString()}</span>}
               </div>
               <Link to={`/my-forms/${a.id}/fill`} style={{ display: "block", padding: "10px 16px", borderRadius: 8, background: "linear-gradient(135deg, #6366f1, #4f46e5)", color: "#fff", fontWeight: 700, fontSize: 13, textAlign: "center", textDecoration: "none" }}>
-                Fill Form â†’
+                Fill Form →
               </Link>
             </div>
           ))}

@@ -6,7 +6,7 @@ import { Layout, Menu, Button, Typography } from "antd";
 import {
   FormOutlined, CustomerServiceOutlined, CarryOutOutlined,
   UserOutlined, LogoutOutlined, MenuOutlined, SunOutlined, MoonOutlined,
-  HomeOutlined
+  HomeOutlined, CloseOutlined
 } from "@ant-design/icons";
 
 const { Sider, Content } = Layout;
@@ -72,14 +72,25 @@ export default function AppLayout() {
                 fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontWeight: 700,
               }}
-              title="Close menu">✕</button>
+              title="Close menu"><CloseOutlined /></button>
           )}
           <Link to="/tickets" style={{
             background: '#ffffff', padding: '14px 16px', borderRadius: 12,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            marginBottom: 16, boxShadow: '0 8px 22px rgba(0,0,0,0.22)'
+            marginBottom: 16, boxShadow: '0 8px 22px rgba(0,0,0,0.22)',
+            textDecoration: 'none'
           }}>
-            <img src="/image.png" alt="Bluspring Logo" style={{ width: '100%', maxWidth: 200, height: 'auto', maxHeight: 52, objectFit: 'contain' }} />
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 10
+            }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: 10,
+                background: 'linear-gradient(135deg, #6366f1 0%, #14b8a6 100%)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 18, fontWeight: 900, color: '#fff'
+              }}>B</div>
+              <div style={{ fontSize: 20, fontWeight: 900, color: '#0b1120', lineHeight: 1.2 }}>Bluspring</div>
+            </div>
           </Link>
 
           <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.8, color: 'var(--text-secondary)', margin: '0 0 10px', paddingLeft: 8 }}>Employee Portal</div>

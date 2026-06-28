@@ -1,4 +1,12 @@
 ﻿import React from "react";
+import { APP_CONFIG } from "../config";
+
+function MailIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>;
+}
+function AlertTriangleIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
+}
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -51,7 +59,7 @@ class ErrorBoundary extends React.Component {
               width: 64, height: 64, margin: "0 auto 24px",
               background: "linear-gradient(135deg, rgba(239,68,68,0.2) 0%, rgba(239,68,68,0.05) 100%)",
               borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28
-            }}>⚠️</div>
+            }}><AlertTriangleIcon /></div>
             <h2 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-primary)", margin: "0 0 12px" }}>Something went wrong</h2>
             <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.6, margin: "0 0 32px" }}>
               The application encountered an unexpected error. Please try reloading the page or contact your administrator if the issue persists.
@@ -69,7 +77,7 @@ class ErrorBoundary extends React.Component {
               }}>Go to Login</button>
             </div>
             <div style={{ marginTop: 24, fontSize: 12, color: "var(--text-secondary)" }}>
-              <a href="mailto:prakash.r@bluspring.com" style={{ color: "#14b8a6", textDecoration: "none" }}>✉️ Contact Support</a>
+              <a href={`mailto:${APP_CONFIG.ADMIN_EMAIL}`} style={{ color: "#14b8a6", textDecoration: "none" }}><MailIcon /> Contact Support</a>
             </div>
           </div>
         </div>

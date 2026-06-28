@@ -2,6 +2,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+function CheckIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><polyline points="20 6 9 17 4 12"/></svg>;
+}
+function XIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
+}
+
 export default function Profile() {
   const { currentUser, profile, logout } = useAuth();
   const navigate = useNavigate();
@@ -72,7 +79,7 @@ export default function Profile() {
               </span>
               <span style={{ color: "var(--text-secondary)", fontWeight: 600 }}>Email Verified</span>
               <span style={{ color: currentUser?.is_email_verified ? "#34d399" : "#fca5a5" }}>
-                {currentUser?.is_email_verified ? "âœ“ Yes" : "âœ— No"}
+                {currentUser?.is_email_verified ? <><CheckIcon /> Yes</> : <><XIcon /> No</>}
               </span>
             </div>
           </div>

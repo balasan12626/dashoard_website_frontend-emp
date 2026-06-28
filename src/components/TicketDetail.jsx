@@ -4,6 +4,34 @@ import { useAuth } from "../context/AuthContext";
 import { getTicket, updateTicket, addReply, deleteReply, listShares, unshareTicket } from "../services/ticketApi";
 import ShareModal from "./ShareModal";
 
+function LinkIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>;
+}
+function GlobeIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
+}
+function LockIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+}
+function MessageIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>;
+}
+function CloseIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
+}
+function ClipboardIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>;
+}
+function ZapIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
+}
+function CheckCircleIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>;
+}
+function RefreshIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>;
+}
+
 const statusColors = { open: { bg: "rgba(245,158,11,0.12)", color: "#fbbf24" }, in_progress: { bg: "rgba(99,102,241,0.12)", color: "#818cf8" }, resolved: { bg: "rgba(16,185,129,0.12)", color: "#34d399" }, closed: { bg: "rgba(148,163,184,0.12)", color: "var(--text-secondary)" }, reopened: { bg: "rgba(239,68,68,0.12)", color: "#fca5a5" } };
 const priorityColors = { low: { bg: "rgba(148,163,184,0.12)", color: "var(--text-secondary)" }, medium: { bg: "rgba(245,158,11,0.12)", color: "#fbbf24" }, high: { bg: "rgba(249,115,22,0.12)", color: "#fb923c" }, urgent: { bg: "rgba(239,68,68,0.12)", color: "#fca5a5" } };
 
@@ -87,7 +115,7 @@ export default function TicketDetail() {
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
         <Link to="/tickets" style={{ color: "#818cf8", fontSize: 14, textDecoration: "none", fontWeight: 600 }}>â† Back to Tickets</Link>
         <div style={{ display: "flex", gap: 8 }}>
-          <button onClick={() => setShowShare(true)} style={{ padding: "8px 16px", borderRadius: 8, background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", color: "#818cf8", fontWeight: 700, fontSize: 13, cursor: "pointer" }}>ðŸ”— Share</button>
+          <button onClick={() => setShowShare(true)} style={{ padding: "8px 16px", borderRadius: 8, background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", color: "#818cf8", fontWeight: 700, fontSize: 13, cursor: "pointer" }}><LinkIcon /> Share</button>
         </div>
       </header>
 
@@ -99,7 +127,7 @@ export default function TicketDetail() {
             <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
               <span style={{ padding: "4px 10px", borderRadius: 4, fontSize: 12, fontWeight: 700, background: sc.bg, color: sc.color }}>{ticket.status.replace("_", " ").toUpperCase()}</span>
               <span style={{ padding: "4px 10px", borderRadius: 4, fontSize: 12, fontWeight: 700, background: pc.bg, color: pc.color }}>{ticket.priority.toUpperCase()}</span>
-              <span style={{ padding: "4px 10px", borderRadius: 4, fontSize: 12, fontWeight: 600, background: ticket.visibility === "public" ? "rgba(16,185,129,0.12)" : "rgba(245,158,11,0.12)", color: ticket.visibility === "public" ? "#34d399" : "#fbbf24" }}>{ticket.visibility === "public" ? "ðŸŒ Public" : "ðŸ”’ Private"}</span>
+              <span style={{ padding: "4px 10px", borderRadius: 4, fontSize: 12, fontWeight: 600, background: ticket.visibility === "public" ? "rgba(16,185,129,0.12)" : "rgba(245,158,11,0.12)", color: ticket.visibility === "public" ? "#34d399" : "#fbbf24" }}>{ticket.visibility === "public" ? <><GlobeIcon /> Public</> : <><LockIcon /> Private</>}</span>
               <span style={{ fontSize: 12, color: "var(--text-secondary)", alignSelf: "center" }}>{ticket.category.replace("_", " ")}</span>
             </div>
             <h1 style={{ fontSize: 22, fontWeight: 800, margin: "0 0 10px" }}>{ticket.subject}</h1>
@@ -108,7 +136,7 @@ export default function TicketDetail() {
           </div>
 
           <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, padding: 25, marginBottom: 20 }}>
-            <h3 style={{ fontSize: 16, fontWeight: 800, margin: "0 0 16px" }}>ðŸ’¬ Replies ({ticket.replies?.length || 0})</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 800, margin: "0 0 16px" }}><MessageIcon /> Replies ({ticket.replies?.length || 0})</h3>
             {ticket.replies?.length === 0 && <p style={{ color: "var(--text-secondary)", fontSize: 13 }}>No replies yet.</p>}
             {ticket.replies?.map(r => (
               <div key={r.id} style={{ padding: "12px 16px", background: r.is_internal ? "rgba(245,158,11,0.05)" : "rgba(255,255,255,0.02)", border: r.is_internal ? "1px solid rgba(245,158,11,0.15)" : "1px solid rgba(255,255,255,0.04)", borderRadius: 10, marginBottom: 10 }}>
@@ -120,7 +148,7 @@ export default function TicketDetail() {
                   <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
                     <span style={{ fontSize: 11, color: "var(--text-secondary)" }}>{new Date(r.created_at).toLocaleString()}</span>
                     {(r.user_id === currentUser?.id || currentUser?.userType === "admin") && (
-                      <button onClick={() => handleDeleteReply(r.id)} style={{ background: "none", border: "none", color: "#ef4444", fontSize: 11, cursor: "pointer" }}>âœ•</button>
+                      <button onClick={() => handleDeleteReply(r.id)} style={{ background: "none", border: "none", color: "#ef4444", fontSize: 11, cursor: "pointer" }}><CloseIcon /></button>
                     )}
                   </div>
                 </div>
@@ -148,7 +176,7 @@ export default function TicketDetail() {
 
         <div>
           <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, padding: 20, marginBottom: 16 }}>
-            <h3 style={{ fontSize: 14, fontWeight: 800, margin: "0 0 12px" }}>ðŸ“‹ Details</h3>
+            <h3 style={{ fontSize: 14, fontWeight: 800, margin: "0 0 12px" }}><ClipboardIcon /> Details</h3>
             <div style={{ fontSize: 13, color: "var(--text-secondary)", display: "flex", flexDirection: "column", gap: 8 }}>
               <div><span style={{ color: "var(--text-secondary)" }}>Created:</span> {ticket.created_by_name}</div>
               <div><span style={{ color: "var(--text-secondary)" }}>Assigned:</span> {ticket.assigned_to_name || "All admins"}</div>
@@ -160,7 +188,7 @@ export default function TicketDetail() {
 
           {ticket.statusHistory && ticket.statusHistory.length > 0 && (
             <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, padding: 20, marginBottom: 16 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 800, margin: "0 0 12px" }}>ðŸ“‹ Status History</h3>
+              <h3 style={{ fontSize: 14, fontWeight: 800, margin: "0 0 12px" }}><ClipboardIcon /> Status History</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                 {ticket.statusHistory.map((h, i) => {
                   const sc = statusColors[h.new_status] || statusColors.open;
@@ -185,12 +213,12 @@ export default function TicketDetail() {
 
           {(ticket.created_by === currentUser?.id || isStaff) && (
             <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, padding: 20, marginBottom: 16 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 800, margin: "0 0 12px" }}>âš¡ Actions</h3>
+              <h3 style={{ fontSize: 14, fontWeight: 800, margin: "0 0 12px" }}><ZapIcon /> Actions</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {ticket.status !== "in_progress" && <button onClick={() => handleStatusChange("in_progress")} style={{ padding: "8px 14px", borderRadius: 6, background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", color: "#818cf8", fontSize: 12, fontWeight: 700, cursor: "pointer", textAlign: "center" }}>â–¶ Mark In Progress</button>}
-                {ticket.status !== "resolved" && <button onClick={() => openRemarksDialog("resolved")} style={{ padding: "8px 14px", borderRadius: 6, background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.3)", color: "#34d399", fontSize: 12, fontWeight: 700, cursor: "pointer", textAlign: "center" }}>âœ… Resolve</button>}
-                {ticket.status !== "closed" && <button onClick={() => openRemarksDialog("closed")} style={{ padding: "8px 14px", borderRadius: 6, background: "rgba(148,163,184,0.15)", border: "1px solid rgba(148,163,184,0.3)", color: "var(--text-secondary)", fontSize: 12, fontWeight: 700, cursor: "pointer", textAlign: "center" }}>ðŸ”’ Close</button>}
-                {ticket.status !== "open" && <button onClick={() => handleStatusChange("open")} style={{ padding: "8px 14px", borderRadius: 6, background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)", color: "#fbbf24", fontSize: 12, fontWeight: 700, cursor: "pointer", textAlign: "center" }}>ðŸ”„ Reopen</button>}
+                {ticket.status !== "in_progress" && <button onClick={() => handleStatusChange("in_progress")} style={{ padding: "8px 14px", borderRadius: 6, background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", color: "#818cf8", fontSize: 12, fontWeight: 700, cursor: "pointer", textAlign: "center" }}>▶ Mark In Progress</button>}
+                {ticket.status !== "resolved" && <button onClick={() => openRemarksDialog("resolved")} style={{ padding: "8px 14px", borderRadius: 6, background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.3)", color: "#34d399", fontSize: 12, fontWeight: 700, cursor: "pointer", textAlign: "center" }}><CheckCircleIcon /> Resolve</button>}
+                {ticket.status !== "closed" && <button onClick={() => openRemarksDialog("closed")} style={{ padding: "8px 14px", borderRadius: 6, background: "rgba(148,163,184,0.15)", border: "1px solid rgba(148,163,184,0.3)", color: "var(--text-secondary)", fontSize: 12, fontWeight: 700, cursor: "pointer", textAlign: "center" }}><LockIcon /> Close</button>}
+                {ticket.status !== "open" && <button onClick={() => handleStatusChange("open")} style={{ padding: "8px 14px", borderRadius: 6, background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)", color: "#fbbf24", fontSize: 12, fontWeight: 700, cursor: "pointer", textAlign: "center" }}><RefreshIcon /> Reopen</button>}
               </div>
               {showRemarksFor && (
                 <div style={{ marginTop: 12, padding: 12, background: "rgba(255,255,255,0.04)", borderRadius: 8, border: "1px solid var(--border-color)" }}>
@@ -206,14 +234,14 @@ export default function TicketDetail() {
           )}
 
           <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, padding: 20 }}>
-            <h3 style={{ fontSize: 14, fontWeight: 800, margin: "0 0 12px" }}>ðŸ”— Shared With ({shares.length})</h3>
+            <h3 style={{ fontSize: 14, fontWeight: 800, margin: "0 0 12px" }}><LinkIcon /> Shared With ({shares.length})</h3>
             {shares.length === 0 ? <p style={{ color: "var(--text-secondary)", fontSize: 12 }}>Not shared yet.</p> : shares.map(s => (
               <div key={s.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
                 <div style={{ fontSize: 12 }}>
                   <div style={{ fontWeight: 600 }}>{s.shared_with_name}</div>
                   <div style={{ color: "var(--text-secondary)" }}>by {s.shared_by_name}</div>
                 </div>
-                <button onClick={() => handleUnshare(s.shared_with)} style={{ background: "none", border: "none", color: "#ef4444", fontSize: 11, cursor: "pointer" }}>âœ•</button>
+                <button onClick={() => handleUnshare(s.shared_with)} style={{ background: "none", border: "none", color: "#ef4444", fontSize: 11, cursor: "pointer" }}><CloseIcon /></button>
               </div>
             ))}
           </div>

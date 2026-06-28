@@ -44,8 +44,14 @@ export function AuthProvider({ children }) {
     const init = async () => {
       const token = getAccessToken();
       if (!token) {
+        const storedUser = localStorage.getItem('authUser');
+        if (!storedUser) {
+          if (mounted) setLoading(false);
+          return;
+        }
         const newToken = await refreshToken();
         if (!newToken) {
+          localStorage.removeItem('authUser');
           if (mounted) setLoading(false);
           return;
         }
@@ -59,6 +65,9 @@ export function AuthProvider({ children }) {
           roleId: tokenData.roleId,
           name: storedUser?.name || null,
           email: storedUser?.email || null,
+          phone: storedUser?.phone || null,
+          status: storedUser?.status || "pending",
+          is_email_verified: storedUser?.is_email_verified || false,
           role_name: storedUser?.role_name || null,
         };
         if (mounted) {
@@ -66,6 +75,7 @@ export function AuthProvider({ children }) {
           setLoading(false);
         }
       } catch {
+        localStorage.removeItem('authUser');
         if (mounted) setLoading(false);
       }
     };
@@ -135,6 +145,7 @@ export function AuthProvider({ children }) {
       const json = await loginApi(email, password);
       const { user, accessToken: token } = json.data;
       setAccessToken(token);
+      localStorage.setItem('authUser', JSON.stringify(user));
       setCurrentUser(user);
       setLoading(false);
       return json;

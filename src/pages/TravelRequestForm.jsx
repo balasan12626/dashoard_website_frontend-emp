@@ -5,7 +5,8 @@ import {
   Card, Form, Input, InputNumber, Select, Button, Space, Row, Col,
   Typography, Alert, Checkbox, Divider
 } from "antd";
-import { PlusOutlined, CloseOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import { PlusOutlined, CloseOutlined, ArrowLeftOutlined, TeamOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import { APP_CONFIG } from "../config";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -30,8 +31,8 @@ export default function TravelRequestForm() {
         travelClass: values.travelClass,
         paxDetails: { adult: values.flightAdult || 1, child: { count: values.flightChild || 0, age: [] }, infant: values.flightInfant || 0 },
         journeyDetails: [{
-          from: { airportCode: values.fromAirport, cityName: values.fromCity, countryCode: 'IN', countryName: '' },
-          to: { airportCode: values.toAirport, cityName: values.toCity, countryCode: 'IN', countryName: '' },
+          from: { airportCode: values.fromAirport, cityName: values.fromCity, countryCode: APP_CONFIG.COUNTRY_CODE, countryName: '' },
+          to: { airportCode: values.toAirport, cityName: values.toCity, countryCode: APP_CONFIG.COUNTRY_CODE, countryName: '' },
           departureDate: values.departureDate ? new Date(values.departureDate).getTime() : 0,
           arrivalDate: values.arrivalDate ? new Date(values.arrivalDate).getTime() : 0,
         }]
@@ -42,7 +43,7 @@ export default function TravelRequestForm() {
         serviceId: `hotel-${Date.now()}`,
         cityCode: values.hotelCityCode,
         cityName: values.hotelCityName,
-        countryCode: 'IN',
+        countryCode: APP_CONFIG.COUNTRY_CODE,
         checkin: values.checkin ? new Date(values.checkin).getTime() : 0,
         checkout: values.checkout ? new Date(values.checkout).getTime() : 0,
         roomDetailsPaxWise: (values.rooms || [{ adult: 1, childCount: 0, infant: 0 }]).map(r => ({
@@ -89,7 +90,7 @@ export default function TravelRequestForm() {
         <Row gutter={30}>
           <Col span={12}>
             <Space direction="vertical" size="large" style={{ width: '100%' }}>
-              <Card title="ðŸ§‘â€ðŸ¤â€ðŸ§‘ Travellers">
+              <Card title={<span><TeamOutlined /> Travellers</span>}>
                 <Form.List name="travellers">
                   {(fields, { add, remove }) => (
                     <>
@@ -176,7 +177,7 @@ export default function TravelRequestForm() {
                 </Form.Item>
                 <Text type="secondary" style={{ fontSize: 11 }}>Optional: Add any special instructions or notes for the admin</Text>
               </Card>
-              <Card title="âœ… Approver Details">
+              <Card title={<span><CheckCircleOutlined /> Approver Details</span>}>
                 <Form.Item name="approverName" label="Approver Name" rules={[{ required: true }]}>
                   <Input placeholder="Manager name" />
                 </Form.Item>
