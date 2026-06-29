@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -10,8 +10,14 @@ function XIcon() {
 }
 
 export default function Profile() {
-  const { currentUser, profile, logout } = useAuth();
+  const { currentUser, profile, logout, hasMpin } = useAuth();
   const navigate = useNavigate();
+  const [userCode, setUserCode] = useState("");
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem('authUser') || '{}');
+    setUserCode(stored?.user_code || stored?.employee_code || "");
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -50,6 +56,12 @@ export default function Profile() {
             <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 8, fontSize: 14 }}>
               <span style={{ color: "var(--text-secondary)", fontWeight: 600 }}>User ID</span>
               <span style={{ color: "var(--text-muted)", fontFamily: "monospace", fontSize: 12 }}>{currentUser?.id}</span>
+              {userCode && (
+                <>
+                  <span style={{ color: "var(--text-secondary)", fontWeight: 600 }}>Code</span>
+                  <span style={{ color: "var(--text-muted)", fontFamily: "monospace", fontSize: 12 }}>{userCode}</span>
+                </>
+              )}
               <span style={{ color: "var(--text-secondary)", fontWeight: 600 }}>Email</span>
               <span style={{ color: "var(--text-muted)" }}>{currentUser?.email || profile?.email || "-"}</span>
               <span style={{ color: "var(--text-secondary)", fontWeight: 600 }}>Name</span>
@@ -81,6 +93,10 @@ export default function Profile() {
               <span style={{ color: currentUser?.is_email_verified ? "#34d399" : "#fca5a5" }}>
                 {currentUser?.is_email_verified ? <><CheckIcon /> Yes</> : <><XIcon /> No</>}
               </span>
+              <span style={{ color: "var(--text-secondary)", fontWeight: 600 }}>MPIN</span>
+              <span style={{ color: hasMpin ? "#34d399" : "#fca5a5" }}>
+                {hasMpin ? <><CheckIcon /> Active</> : <><XIcon /> Not Set</>}
+              </span>
             </div>
           </div>
 
@@ -91,11 +107,18 @@ export default function Profile() {
               border: "none", color: "#fff", fontWeight: 700, fontSize: 13,
               textDecoration: "none", boxShadow: "0 8px 24px rgba(99,102,241,0.3)"
             }}>Change Password</Link>
+            {!hasMpin && (
+              <Link to="/create-mpin" style={{
+                padding: "10px 20px", borderRadius: 8,
+                background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.3)",
+                color: "#6ee7b7", fontWeight: 700, fontSize: 13, textDecoration: "none",
+              }}>Set MPIN</Link>
+            )}
             <Link to="/tickets" style={{
               padding: "10px 20px", borderRadius: 8,
               background: "var(--border-color)", border: "1px solid rgba(255,255,255,0.15)",
               color: "var(--text-muted)", fontWeight: 600, fontSize: 13, textDecoration: "none"
-            }}>â† Dashboard</Link>
+            }}>Dashboard</Link>
             <button onClick={handleLogout} style={{
               padding: "10px 20px", borderRadius: 8,
               background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.3)",

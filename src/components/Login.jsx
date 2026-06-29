@@ -118,7 +118,10 @@ export default function Login() {
     }
     setAuthLoading(true);
     try {
-      await login(email, password);
+      const json = await login(email, password);
+      if (json.data?.hasMpin === false) {
+        navigate("/create-mpin");
+      }
       if (rememberMe) {
         localStorage.setItem("rememberedEmail", email);
       } else {

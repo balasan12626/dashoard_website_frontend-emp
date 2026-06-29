@@ -5,6 +5,7 @@ import AppLayout from './components/AppLayout.jsx';
 import { AuthProvider } from './context/AuthContext';
 import LoadingScreen from './components/LoadingScreen.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
+import MpinPopup from './components/MpinPopup.jsx';
 
 const Login = lazy(() => import('./components/Login.jsx'));
 const Register = lazy(() => import('./components/Register.jsx'));
@@ -18,6 +19,7 @@ const MyForms = lazy(() => import('./components/MyForms.jsx'));
 const FillAssignedForm = lazy(() => import('./components/FillAssignedForm.jsx'));
 const TravelRequestList = lazy(() => import('./pages/TravelRequestList.jsx'));
 const TravelRequestForm = lazy(() => import('./pages/TravelRequestForm.jsx'));
+const CreateMpin = lazy(() => import('./components/CreateMpin.jsx'));
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/create-mpin" element={<CreateMpin />} />
 
           {/* Employee authenticated routes with sidebar */}
           <Route element={<AppLayout />}>
@@ -49,6 +52,9 @@ function App() {
           {/* Catch-all Redirect */}
           <Route path="*" element={<Navigate to="/tickets" replace />} />
         </Routes>
+
+        {/* Global MPIN popup mounted outside Routes */}
+        <MpinPopup />
         </Suspense>
       </BrowserRouter>
     </AuthProvider>

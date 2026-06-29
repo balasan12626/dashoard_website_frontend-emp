@@ -1,4 +1,4 @@
-﻿import React, { createContext, useContext, useState, useEffect, useRef } from "react";
+﻿import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
 import {
   loginApi,
   registerApi,
@@ -16,12 +16,18 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
+const MPIN_TIMEOUT_MS = 10 * 60 * 1000;
+
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [hasMpin, setHasMpin] = useState(false);
   const lastActivityRef = useRef(Date.now());
   const refreshIntervalRef = useRef(null);
+  const mpinLastVerifiedAt = useRef(0);
+  const [showMpinPopup, setShowMpinPopup] = useState(false);
+  const [pendingMpinAction, setPendingMpinAction] = useState(null);
 
   const refreshToken = async () => {
     try {
@@ -72,6 +78,7 @@ export function AuthProvider({ children }) {
         };
         if (mounted) {
           setCurrentUser(user);
+          setHasMpin(!!storedUser?.hasMpin);
           setLoading(false);
         }
       } catch {
@@ -117,7 +124,7 @@ export function AuthProvider({ children }) {
     window.addEventListener("scroll", handleActivity);
     window.addEventListener("touchstart", handleActivity);
     const inactivityInterval = setInterval(() => {
-      if (Date.now() - lastActivityRef.current >= 60 * 60 * 1000) {
+      if (Date.now() - lastActivityRef.current >= 10 * 60 * 1000) {
         clearInterval(inactivityInterval);
         localStorage.removeItem("rememberedEmail");
         sessionStorage.clear();
@@ -138,15 +145,26 @@ export function AuthProvider({ children }) {
     };
   }, [currentUser]);
 
+  useEffect(() => {
+    if (!currentUser || !hasMpin) return;
+    const mpinTimer = setInterval(() => {
+      if (Date.now() - mpinLastVerifiedAt.current >= MPIN_TIMEOUT_MS) {
+        setShowMpinPopup(true);
+      }
+    }, 60000);
+    return () => clearInterval(mpinTimer);
+  }, [currentUser, hasMpin]);
+
   const login = async (email, password) => {
     setError(null);
     setLoading(true);
     try {
       const json = await loginApi(email, password);
-      const { user, accessToken: token } = json.data;
+      const { user, accessToken: token, hasMpin: mpin } = json.data;
       setAccessToken(token);
-      localStorage.setItem('authUser', JSON.stringify(user));
+      localStorage.setItem('authUser', JSON.stringify({ ...user, hasMpin: mpin }));
       setCurrentUser(user);
+      setHasMpin(!!mpin);
       setLoading(false);
       return json;
     } catch (err) {
@@ -166,6 +184,7 @@ export function AuthProvider({ children }) {
     } catch {
     } finally {
       setCurrentUser(null);
+      setHasMpin(false);
       clearAccessToken();
       localStorage.removeItem('authUser');
     }
@@ -174,6 +193,23 @@ export function AuthProvider({ children }) {
   const resetPassword = async (email) => {
     return forgotPasswordApi(email);
   };
+
+  const requireMpinVerification = useCallback((action) => {
+    if (!hasMpin) return true;
+    const elapsed = Date.now() - mpinLastVerifiedAt.current;
+    if (elapsed < MPIN_TIMEOUT_MS) return true;
+    setPendingMpinAction(() => action);
+    setShowMpinPopup(true);
+    return false;
+  }, [hasMpin]);
+
+  const onMpinVerified = useCallback(() => {
+    mpinLastVerifiedAt.current = Date.now();
+    setShowMpinPopup(false);
+    const action = pendingMpinAction;
+    setPendingMpinAction(null);
+    if (action) action();
+  }, [pendingMpinAction]);
 
   const profile = currentUser ? {
     uid: currentUser.id,
@@ -194,6 +230,13 @@ export function AuthProvider({ children }) {
     register,
     logout,
     resetPassword,
+    hasMpin,
+    setHasMpin,
+    showMpinPopup,
+    setShowMpinPopup,
+    mpinLastVerifiedAt,
+    requireMpinVerification,
+    onMpinVerified,
   };
 
   return (

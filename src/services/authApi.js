@@ -128,3 +128,24 @@ export async function changePasswordApi(currentPassword, newPassword) {
     body: JSON.stringify({ currentPassword, newPassword }),
   });
 }
+
+// ---------------------------------------------------------------------------
+// MPIN API
+// ---------------------------------------------------------------------------
+export async function createMpinApi(mpin) {
+  return request(AUTH_BASE + '/mpin/create', {
+    method: 'POST',
+    body: JSON.stringify({ mpin }),
+  });
+}
+
+export async function verifyMpinApi(mpin) {
+  return request(AUTH_BASE + '/mpin/verify', {
+    method: 'POST',
+    body: JSON.stringify({ mpin }),
+  });
+}
+
+export async function checkMpinStatusApi() {
+  return request(AUTH_BASE + '/mpin/status');
+}
