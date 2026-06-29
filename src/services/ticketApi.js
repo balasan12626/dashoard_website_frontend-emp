@@ -56,6 +56,10 @@ export async function unshareTicket(ticketId, userId) {
   return request(TICKETS_BASE + '/' + encodeURIComponent(ticketId) + '/shares/' + encodeURIComponent(userId), { method: 'DELETE' });
 }
 
+export async function listAllUsersForShare() {
+  return request(TICKETS_BASE + '/users');
+}
+
 export async function searchUsersForShare(search = '') {
   return request(TICKETS_BASE + '/users/search?search=' + encodeURIComponent(search));
 }
